@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engajamentes | Soluções Digitais & I.A.</title>
+    
+    <!-- Google Fonts: Fontes Retrô (Monospace e Pixel-like) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=VT323&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuração do Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Mono', 'monospace'], /* Fonte base retrô mas legível */
+                        retro: ['VT323', 'monospace'], /* Fonte para títulos maiores */
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#05020a',
+                            purple: '#7e1cfc',
+                            magenta: '#c80cfc',
+                            light: '#e2d5f8',
+                            cyan: '#00f3ff', /* Azul neon para o Tech Aulas */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Estilos Retrô (Neon, CRT, Grid) -->
+    <style>
+        :root {
+            --purple: #7e1cfc;
+            --magenta: #c80cfc;
+            --cyan: #00f3ff;
+        }
+
+        body {
+            background-color: #05020a;
+            color: #e2d5f8;
+            overflow-x: hidden;
+        }
+
+        /* Efeito Scanlines CRT (Tela de tubo) */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 50%,
+                rgba(0,0,0,0.2)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+        /* Grade Retrô Synthwave em movimento */
+        .synthwave-grid {
+            position: fixed;
+            bottom: -20vh;
+            left: -50vw;
+            width: 200vw;
+            height: 60vh;
+            background-image: 
+                linear-gradient(var(--purple) 2px, transparent 2px),
+                linear-gradient(90deg, var(--purple) 2px, transparent 2px);
+            background-size: 50px 50px;
+            transform: perspective(600px) rotateX(75deg);
+            animation: moveGrid 3s linear infinite;
+            opacity: 0.3;
+            z-index: -2;
+            mask-image: linear-gradient(to top, black 20%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to top, black 20%, transparent 100%);
+        }
+
+        @keyframes moveGrid {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 50px; }
+        }
+
+        /* Estilos Neon */
+        .neon-box-purple {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--purple);
+            box-shadow: 0 0 10px var(--purple), inset 0 0 10px rgba(126, 28, 252, 0.2);
+        }
+        
+        .neon-box-magenta {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--magenta);
+            box-shadow: 0 0 15px var(--magenta), inset 0 0 15px rgba(200, 12, 252, 0.2);
+        }
+
+        .neon-box-cyan {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--cyan);
+            box-shadow: 0 0 15px var(--cyan), inset 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        .neon-text-magenta {
+            text-shadow: 0 0 10px var(--magenta), 0 0 20px var(--magenta);
+            color: #fff;
+        }
+
+        .neon-text-purple {
+            text-shadow: 0 0 10px var(--purple), 0 0 20px var(--purple);
+        }
+
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hover em Cards Retrô */
+        .retro-card {
+            transition: all 0.3s ease;
+            border: 2px solid rgba(126, 28, 252, 0.3);
+            background: #0a0514;
+        }
+        .retro-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--magenta);
+            box-shadow: 0 0 20px rgba(200, 12, 252, 0.4);
+        }
+        
+        /* Cursor piscando estilo terminal */
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-magenta selection:text-white">
+
+    <!-- Efeitos Visuais Globais -->
+    <div class="scanlines"></div>
+    <div class="synthwave-grid"></div>
+
+    <!-- NAVBAR RETRÔ -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="bg-brand-dark/90 backdrop-blur-md border-b-2 border-brand-purple/50 shadow-[0_0_15px_rgba(126,28,252,0.3)]">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="#" class="flex items-center gap-2">
+                    <!-- AQUI VOCÊ COLOCA A SUA LOGO -->
+                    <!-- A logo branca ou roxa ficará perfeita aqui -->
+                    <img src="EngajaLogo_(1).png" alt="Engajamentes Logo" class="h-10 md:h-12 w-auto object-contain drop-shadow-[0_0_8px_#c80cfc]">
+                </a>
+                
+                <div class="hidden md:flex gap-8 text-sm uppercase tracking-widest font-bold text-brand-light/80">
+                    <a href="#historia" class="hover:text-brand-magenta hover:drop-shadow-[0_0_5px_#c80cfc] transition-all">Nossa História</a>
+                    <a href="#portfolio" class="hover:text-brand-magenta hover:drop-shadow-[0_0_5px_#c80cfc] transition-all">Trabalhos</a>
+                    <a href="#servicos" class="hover:text-brand-magenta hover:drop-shadow-[0_0_5px_#c80cfc] transition-all">Serviços</a>
+                </div>
+
+                <!-- Botão Menu Mobile -->
+                <button class="md:hidden text-brand-magenta">
+                    <i class="ph ph-list text-3xl drop-shadow-[0_0_5px_#c80cfc]"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. HERO SECTION -->
+    <section class="relative min-h-screen flex flex-col items-center justify-center pt-20 px-6">
+        
+        <!-- Sol Retrô de Fundo -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-96 md:h-96 rounded-full bg-gradient-to-b from-brand-magenta to-brand-purple opacity-20 filter blur-[30px] z-[-1]"></div>
+
+        <div class="max-w-4xl mx-auto text-center reveal mt-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 border border-brand-purple bg-black text-brand-purple mb-8 shadow-[0_0_10px_#7e1cfc]">
+                <span class="text-xs uppercase tracking-widest font-bold">>_ Tecnologia & Criatividade</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-retro mb-6 leading-tight tracking-wider text-white">
+                Construindo a nova <br>
+                <span class="neon-text-magenta">Dimensão Digital</span>
+            </h1>
+            
+            <p class="text-base md:text-lg text-brand-light/70 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Nós transformamos a forma como empresas se comunicam, vendem e existem na internet através de Sistemas Inteligentes, I.A. e Design Impecável.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-6 mt-4">
+                <a href="#servicos" class="neon-box-purple px-8 py-4 font-bold tracking-widest uppercase hover:bg-brand-purple/20 transition-all flex items-center justify-center gap-2 text-sm text-brand-light">
+                    Ver Soluções
+                </a>
+                <a href="#contato" class="neon-box-magenta px-8 py-4 font-bold tracking-widest uppercase bg-brand-magenta/10 hover:bg-brand-magenta hover:text-white transition-all flex items-center justify-center gap-2 text-sm text-brand-magenta">
+                    Falar com a Equipe <i class="ph ph-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Indicador de Scroll -->
+        <a href="#historia" class="absolute bottom-10 animate-bounce text-brand-magenta hover:text-white transition-colors">
+            <i class="ph ph-caret-down text-3xl drop-shadow-[0_0_5px_#c80cfc]"></i>
+        </a>
+    </section>
+
+    <!-- 2. HISTÓRIA (COM FOTO) -->
+    <section id="historia" class="py-24 relative px-6 z-10 bg-brand-dark">
+        <div class="max-w-6xl mx-auto border-t border-brand-purple/30 pt-20">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                
+                <div class="w-full lg:w-1/2 reveal">
+                    <h2 class="text-xs font-bold tracking-widest text-brand-purple uppercase mb-2">>_ Quem Somos</h2>
+                    <h3 class="text-4xl md:text-5xl font-retro mb-6 text-white uppercase tracking-wider">Nossa História<span class="cursor-blink text-brand-magenta">_</span></h3>
+                    <p class="text-brand-light/70 leading-relaxed mb-6">
+                        A Engajamentes nasceu da vontade de revolucionar a forma como as empresas se conectam com seus clientes no ambiente digital.
+                    </p>
+                    <p class="text-brand-light/70 leading-relaxed">
+                        Nossa jornada começou unindo criatividade e tecnologia. Não somos apenas uma agência, somos parceiros estratégicos de tecnologia, desenvolvendo desde sistemas complexos com Inteligência Artificial até identidades visuais marcantes.
+                    </p>
+                </div>
+                
+                <!-- Espaço para Foto com moldura Retrô -->
+                <div class="w-full lg:w-1/2 reveal">
+                    <div class="neon-box-purple p-2 transform rotate-2 hover:rotate-0 transition-all duration-500 relative bg-black">
+                        <!-- Efeito de cor na imagem para ficar no clima -->
+                        <div class="absolute inset-0 bg-brand-purple/20 mix-blend-color z-10 pointer-events-none"></div>
+                        
+                        <!-- AQUI VAI O LINK DO SUPABASE PARA A FOTO DA HISTÓRIA -->
+                        <img 
+                            src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" 
+                            alt="Nossa Equipe Engajamentes" 
+                            class="w-full h-auto object-cover grayscale opacity-90"
+                        >
+                        <!-- Adorno retrô -->
+                        <div class="absolute -bottom-4 -right-4 bg-brand-dark px-4 py-2 border-2 border-brand-magenta text-brand-magenta text-xs font-bold tracking-widest z-20 shadow-[0_0_10px_#c80cfc]">
+                            SYS.REC // 198X
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. TRABALHOS (PORTFÓLIO INSTAGRAM) -->
+    <section id="portfolio" class="py-24 relative px-6 bg-[#030106]">
+        <!-- Linha divisória top -->
+        <div class="w-full h-[2px] bg-gradient-to-r from-transparent via-brand-purple to-transparent absolute top-0 left-0 opacity-50"></div>
+
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-xs font-bold tracking-widest text-brand-purple uppercase mb-2">>_ Portfólio</h2>
+                <h3 class="text-4xl md:text-5xl font-retro text-white uppercase tracking-wider neon-text-purple">Trabalhos Realizados</h3>
+                <p class="text-brand-light/50 mt-4 max-w-xl mx-auto">Um pouco do que já construímos no multiverso digital. Assista aos nossos cases.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Card Video 1 -->
+                <div class="retro-card p-4 reveal">
+                    <div class="aspect-[9/16] bg-black overflow-hidden mb-4 border-2 border-dashed border-brand-purple/50 flex items-center justify-center relative group">
+                        <!-- COLE O IFRAME DO INSTAGRAM AQUI -->
+                        <div class="text-center p-6 group-hover:scale-110 transition-transform">
+                            <i class="ph ph-instagram-logo text-5xl text-brand-magenta mb-2 drop-shadow-[0_0_8px_#c80cfc]"></i>
+                            <p class="text-xs text-brand-light/50 font-bold uppercase tracking-widest mt-4">INSERIR IFRAME</p>
+                        </div>
+                    </div>
+                    <h4 class="font-retro text-2xl text-white px-2 tracking-wide uppercase">Sistema Meta I.A.</h4>
+                </div>
+
+                <!-- Card Video 2 -->
+                <div class="retro-card p-4 reveal delay-100">
+                    <div class="aspect-[9/16] bg-black overflow-hidden mb-4 border-2 border-dashed border-brand-purple/50 flex items-center justify-center relative group">
+                        <!-- COLE O IFRAME DO INSTAGRAM AQUI -->
+                        <div class="text-center p-6 group-hover:scale-110 transition-transform">
+                            <i class="ph ph-instagram-logo text-5xl text-brand-magenta mb-2 drop-shadow-[0_0_8px_#c80cfc]"></i>
+                            <p class="text-xs text-brand-light/50 font-bold uppercase tracking-widest mt-4">INSERIR IFRAME</p>
+                        </div>
+                    </div>
+                    <h4 class="font-retro text-2xl text-white px-2 tracking-wide uppercase">App Delivery</h4>
+                </div>
+
+                <!-- Card Video 3 -->
+                <div class="retro-card p-4 reveal delay-200">
+                    <div class="aspect-[9/16] bg-black overflow-hidden mb-4 border-2 border-dashed border-brand-purple/50 flex items-center justify-center relative group">
+                        <!-- COLE O IFRAME DO INSTAGRAM AQUI -->
+                        <div class="text-center p-6 group-hover:scale-110 transition-transform">
+                            <i class="ph ph-instagram-logo text-5xl text-brand-magenta mb-2 drop-shadow-[0_0_8px_#c80cfc]"></i>
+                            <p class="text-xs text-brand-light/50 font-bold uppercase tracking-widest mt-4">INSERIR IFRAME</p>
+                        </div>
+                    </div>
+                    <h4 class="font-retro text-2xl text-white px-2 tracking-wide uppercase">Estratégia Social</h4>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. SERVIÇOS -->
+    <section id="servicos" class="py-24 relative px-6 bg-brand-dark border-t border-brand-purple/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16 reveal text-center">
+                <h3 class="text-4xl md:text-5xl font-retro text-white uppercase tracking-wider">Nossos Serviços</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Serviço 1 -->
+                <div class="retro-card p-8 reveal relative overflow-hidden group">
+                    <i class="ph ph-robot text-5xl text-brand-purple mb-6 block drop-shadow-[0_0_10px_#7e1cfc] group-hover:text-brand-magenta transition-colors"></i>
+                    <h3 class="text-2xl font-retro text-white mb-3 tracking-wide uppercase">WhatsApp + I.A.</h3>
+                    <p class="text-brand-light/60 leading-relaxed text-sm">Automação inteligente para escalar suas vendas no WhatsApp utilizando Inteligência Artificial de ponta.</p>
+                </div>
+
+                <!-- Serviço 2 -->
+                <div class="retro-card p-8 reveal delay-100 relative overflow-hidden group border-brand-magenta/30">
+                    <i class="ph ph-device-mobile text-5xl text-brand-magenta mb-6 block drop-shadow-[0_0_10px_#c80cfc] group-hover:text-brand-purple transition-colors"></i>
+                    <h3 class="text-2xl font-retro text-white mb-3 tracking-wide uppercase">Apps & Sistemas</h3>
+                    <p class="text-brand-light/60 leading-relaxed text-sm">Desenvolvimento de aplicativos móveis e sistemas web sob medida, com alta performance e UX premium.</p>
+                </div>
+
+                <!-- Serviço 3 -->
+                <div class="retro-card p-8 reveal delay-200 relative overflow-hidden group">
+                    <i class="ph ph-share-network text-5xl text-brand-purple mb-6 block drop-shadow-[0_0_10px_#7e1cfc] group-hover:text-brand-magenta transition-colors"></i>
+                    <h3 class="text-2xl font-retro text-white mb-3 tracking-wide uppercase">Social Media</h3>
+                    <p class="text-brand-light/60 leading-relaxed text-sm">Gestão estratégica de redes sociais com design focado em engajamento e estética impecável.</p>
+                </div>
+
+                <!-- Serviço 4 -->
+                <div class="retro-card p-8 reveal relative overflow-hidden group lg:col-span-1 md:col-span-2 border-brand-magenta/30">
+                    <i class="ph ph-trend-up text-5xl text-brand-magenta mb-6 block drop-shadow-[0_0_10px_#c80cfc] group-hover:text-brand-purple transition-colors"></i>
+                    <h3 class="text-2xl font-retro text-white mb-3 tracking-wide uppercase">Tráfego Pago</h3>
+                    <p class="text-brand-light/60 leading-relaxed text-sm">Anúncios otimizados em plataformas Meta e Google para atrair leads qualificados e maximizar seu ROI.</p>
+                </div>
+
+                <!-- Serviço 5 -->
+                <div class="retro-card p-8 reveal delay-100 relative overflow-hidden group lg:col-span-2 md:col-span-2">
+                    <i class="ph ph-layout text-5xl text-brand-purple mb-6 block drop-shadow-[0_0_10px_#7e1cfc] group-hover:text-brand-magenta transition-colors"></i>
+                    <h3 class="text-2xl font-retro text-white mb-3 tracking-wide uppercase">Páginas de Vendas</h3>
+                    <p class="text-brand-light/60 leading-relaxed text-sm max-w-2xl">Landing pages ultrarrápidas, responsivas, com copy persuasiva e design focado em converter visitantes em compradores leais.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. DESTAQUE E TECH AULAS (NEON CYAN / ESTILO CYBERPUNK) -->
+    <section class="py-24 relative px-6 bg-[#030106]">
+        <!-- Fundo diferenciado para o destaque -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,243,255,0.05)_0,transparent_60%)] pointer-events-none"></div>
+        
+        <div class="max-w-6xl mx-auto neon-box-cyan p-8 md:p-12 reveal relative overflow-hidden">
+            <!-- Grid interno da caixa -->
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMjBMMjAgMjBNMjAgMEwyMCAyMCIgc3Ryb2tlPSIjMDBmM2ZmIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==')] opacity-20 pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
+                <div class="w-full md:w-2/3">
+                    <div class="flex items-center gap-2 mb-4 text-brand-cyan">
+                        <i class="ph ph-code-block text-2xl drop-shadow-[0_0_5px_#00f3ff]"></i>
+                        <span class="text-xs font-bold tracking-widest uppercase">>>> Inovação Direta</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-retro text-white mb-6 leading-tight uppercase tracking-wider">
+                        Construímos Apps <br>
+                        Que <span class="text-brand-cyan drop-shadow-[0_0_8px_#00f3ff]">Mudam o Jogo.</span>
+                    </h2>
+                    <p class="text-brand-light/80 leading-relaxed max-w-xl text-sm">
+                        Nossa equipe técnica não apenas planeja, mas constrói soluções reais. Aplicativos nativos e híbridos fluidos, com a melhor experiência para o usuário final. Quer aprender como nós fazemos isso?
+                    </p>
+                </div>
+
+                <div class="w-full md:w-1/3 flex justify-center md:justify-end mt-6 md:mt-0">
+                    <!-- LINK TECH AULAS -->
+                    <a href="#link-tech-aulas" class="group relative inline-flex items-center justify-center gap-3 px-8 py-5 font-bold tracking-widest uppercase text-brand-dark bg-brand-cyan border border-brand-cyan shadow-[0_0_20px_rgba(0,243,255,0.5)] hover:bg-transparent hover:text-brand-cyan hover:shadow-[0_0_30px_rgba(0,243,255,0.8)] transition-all duration-300 w-full sm:w-auto text-center text-sm">
+                        <i class="ph ph-graduation-cap text-2xl"></i>
+                        Acessar Tech Aulas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. PRICING / ORÇAMENTO (TERMINAL RETRÔ) -->
+    <section id="contato" class="py-32 relative px-6 flex justify-center items-center bg-brand-dark border-t border-brand-purple/20">
+        <div class="max-w-3xl w-full mx-auto text-center reveal">
+            
+            <!-- Quadro Estilo Terminal -->
+            <div class="neon-box-magenta p-10 md:p-16 relative overflow-hidden bg-black text-left">
+                
+                <div class="absolute top-0 left-0 w-full bg-brand-magenta text-black font-bold tracking-widest text-xs py-1 px-4 flex justify-between">
+                    <span>ALERTA_DO_SISTEMA.EXE</span>
+                    <span>[X]</span>
+                </div>
+                
+                <h2 class="text-3xl md:text-5xl font-retro text-white mt-8 mb-6 uppercase tracking-wider">
+                    Investimento <span class="neon-text-magenta">Sob Medida</span>
+                </h2>
+                
+                <p class="text-brand-light/80 leading-relaxed mb-10 font-sans text-sm md:text-base">
+                    > Não passamos valores tabelados.<br>
+                    > Acreditamos que <strong>cada projeto é único</strong>.<br><br>
+                    Nosso primeiro passo é entender profundamente o cenário do seu negócio para, então, desenhar a solução técnica ideal.<span class="cursor-blink text-brand-magenta font-bold">_</span>
+                </p>
+
+                <!-- LINK PARA O WHATSAPP DA EMPRESA -->
+                <div class="flex justify-center mt-8">
+                    <a href="https://wa.me/SEUNUMERO" target="_blank" class="inline-flex items-center justify-center gap-2 px-10 py-5 bg-white text-black font-retro tracking-widest uppercase text-xl hover:bg-brand-light hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all duration-300 relative z-10 w-full md:w-auto">
+                        <i class="ph ph-whatsapp-logo text-3xl text-green-600"></i>
+                        Agendar Diagnóstico
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER RETRÔ -->
+    <footer class="bg-black border-t-2 border-brand-purple py-8 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <!-- LOGO NO RODAPÉ TAMBÉM -->
+                <img src="EngajaLogo_(1).png" alt="Engajamentes Logo" class="h-8 object-contain drop-shadow-[0_0_5px_#c80cfc] grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all">
+            </div>
+            
+            <div class="text-brand-light/50 text-xs font-bold tracking-widest uppercase">
+                &copy; <span id="year"></span> Engajamentes. Todos os direitos reservados.
+            </div>
+            
+            <div class="flex gap-4">
+                <!-- LINKS SOCIAIS -->
+                <a href="#" class="w-10 h-10 border border-brand-purple bg-brand-dark flex items-center justify-center text-brand-purple hover:text-white hover:bg-brand-purple hover:shadow-[0_0_10px_#7e1cfc] transition-all">
+                    <i class="ph ph-instagram-logo text-xl"></i>
+                </a>
+                <a href="#" class="w-10 h-10 border border-brand-purple bg-brand-dark flex items-center justify-center text-brand-purple hover:text-white hover:bg-brand-purple hover:shadow-[0_0_10px_#7e1cfc] transition-all">
+                    <i class="ph ph-linkedin-logo text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT -->
+    <script>
+        // 1. Atualizar ano no footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 2. Animação de Scroll Reveal
+        function revealOnScroll() {
+            var reveals = document.querySelectorAll('.reveal');
+            var windowHeight = window.innerHeight;
+            var elementVisible = 100;
+
+            reveals.forEach((reveal) => {
+                var elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Aciona na primeira carga
+
+        // 3. Efeito Navbar Retrovisor
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.firstElementChild.classList.add('bg-black/95');
+                navbar.firstElementChild.classList.remove('bg-brand-dark/90');
+            } else {
+                navbar.firstElementChild.classList.remove('bg-black/95');
+                navbar.firstElementChild.classList.add('bg-brand-dark/90');
+            }
+        });
+    </script>
+</body>
+</html>
